@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:therapy_app/pantallas/settings.dart';
-
+import 'package:therapy_app/pantallas/home_p.dart';
+import 'package:therapy_app/pantallas/profile.dart';
+import 'package:therapy_app/pantallas/faq.dart';
 
 class AgendaPage extends StatefulWidget {
   const AgendaPage({super.key, required this.title});
@@ -49,7 +51,23 @@ class _AgendaPageState extends State<AgendaPage> {
           },
         ),
       ),
-      body: Center(child: _widgetOptions[_selectedIndex]),
+      body: Center(
+
+        child: Container(
+          height:double.maxFinite,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/dibujos.jpg"),
+              fit: BoxFit.cover,
+              ), //AQUIIIIIIIIIIIIIIII
+          ),
+          
+          child: _widgetOptions[_selectedIndex]
+          
+        ),
+        
+        ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255), //color de fondo
 
       drawer: Drawer(
@@ -66,7 +84,7 @@ class _AgendaPageState extends State<AgendaPage> {
             ),
             ListTile(
               leading: const Icon(Icons.home_outlined), //icono casita
-              title: const Text('Home'),
+              title: const Text('Inicio'),
               selected: _selectedIndex == 0, //seleccionar index
               onTap: () {
                 // Update the state of the app
@@ -74,7 +92,7 @@ class _AgendaPageState extends State<AgendaPage> {
                 //ACA DEBERIA HABER UN NAVIGATOR PUSH************************************************************************** 
                 //
                 //Navigator.push
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(title: 'title')));
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => AgendaPage(title: 'title')));
               
                 // Then close the drawer
                 Navigator.pop(context);
@@ -90,7 +108,7 @@ class _AgendaPageState extends State<AgendaPage> {
                 // Then close the drawer
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const AgendaPage(title: 'Therapy App | Inicio',),));
+                    builder: (context) => const ProfilePage(title: 'Mi Perfil',),));
                 //Navigator.pop(context);
                 
               },
@@ -149,6 +167,9 @@ class _AgendaPageState extends State<AgendaPage> {
                 // Then close the drawer
                 //Navigator.pop(context);
                 //añadir el navigator push sin el pop aqui cuando tenga la pantalla creada
+                Navigator.of(context).push( //con push pa volver atras, cambiar
+                  MaterialPageRoute(
+                    builder: (context) => const FaqPage(title: 'Preguntas Frecuentes',),));
               },
             ),
           ],

@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( //EL SCAFFOLD
       appBar: AppBar(
         backgroundColor: Colors.red, //color barra
         title: Text(
@@ -53,10 +53,72 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
       ),
-      body: Center(child: _widgetOptions[_selectedIndex]),
+      body: Center(
+        child: Container(
+          height:double.maxFinite,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/dibujos.jpg"),
+              fit: BoxFit.cover,
+              ), //AQUIIIIIIIIIIIIIIII
+          ),
+          
+          child: _widgetOptions[_selectedIndex]
+          
+        ),
+        
+        ),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255), //color de fondo
 
       drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(child: Text('Titulo Drawer')),
+
+            ListTile( //BOTON INICIO
+              leading: Icon(Icons.home),
+              title: Text('Inicio'),
+              onTap: () {}, //ME FALTA NAVEGACION ENTRE PAGINAS NOMAS PORQUE NO FUNCIONABA BIEN
+              ),
+
+            ListTile( //BOTON PERFIL
+              leading: Icon(Icons.person),
+              title: Text('Mi Perfil')
+              ),
+
+            ListTile( //BOTON AGENDA
+              leading: Icon(Icons.calendar_month),
+              title: Text('Agenda')
+              ),
+
+            ListTile( //BOTON USUARIOS
+              leading: Icon(Icons.family_restroom),
+              title: Text('Usuarios Asignados')
+              ),
+
+            //separar secciones
+            Divider(color: Colors.black,),
+
+            ListTile( //BOTON CONFIG
+              leading: Icon(Icons.settings),
+              title: Text('Configuración')
+              ),
+
+            ListTile( //BOTON FAQ
+              leading: Icon(Icons.question_answer_outlined),
+              title: Text('Preguntas Frecuentes')
+              ),
+
+            ListTile( //BOTON CONTACTO
+              leading: Icon(Icons.quick_contacts_dialer_rounded),
+              title: Text('Contacto')
+              ),
+          ],
+        ),
+      )
+      /*
+      drawer: Drawer( //EL DRAWER
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
         // space to fit everything.
@@ -159,19 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 }
-
-
-class Pepe extends StatelessWidget {
-  const Pepe({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
-//flutter snippet revisar 
