@@ -3,6 +3,9 @@ import 'package:therapy_app/pantallas/agenda.dart';
 import 'package:therapy_app/pantallas/faq.dart';
 import 'package:therapy_app/pantallas/profile.dart';
 import 'package:therapy_app/pantallas/settings.dart';
+import 'package:therapy_app/pantallas/drawer_header.dart';
+import 'package:therapy_app/pantallas/usuarios.dart';
+import 'package:therapy_app/pantallas/content.dart';
 
 
 
@@ -16,7 +19,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
   int _selectedIndex = 0;
+  var currentPage = DrawerSections.inicioo; //
+
   static const TextStyle optionStyle = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
@@ -33,8 +40,181 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  //chat
+ Widget menuItem(int id, String title, IconData icon, bool selected, BuildContext context) {
+  return Material(
+    color: selected ? Colors.grey : Colors.transparent,
+    child: InkWell(
+      onTap: () {
+        Navigator.pop(context); // cerrar el drawer
+
+        setState(() {
+          if (id == 1) {
+            currentPage = DrawerSections.inicioo;
+          } else if (id == 2) {
+            currentPage = DrawerSections.miperfil;
+          } else if (id == 3) {
+            currentPage = DrawerSections.agenda;
+          } else if (id == 4) {
+            currentPage = DrawerSections.usuarios_asignados;
+          } else if (id == 5) {
+            currentPage = DrawerSections.settings;
+          } else if (id == 6) {
+            currentPage = DrawerSections.faq;
+          }
+        });
+      },
+      child: Padding(
+        padding: EdgeInsets.all(15.0),
+        child: Row(
+          children: [
+            Expanded(child: Icon(icon, size: 20, color: Colors.black)),
+            Expanded(
+              flex: 3,
+              child: Text(
+                title,
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+
+Widget TarjetaImagen(Content item, BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      // Ir a otra pantalla si quieres, o eliminar esta parte si no navegas
+    },
+    child: Card(
+      elevation: 8.0,
+      margin: const EdgeInsets.all(8.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              image: DecorationImage(
+                image: AssetImage(item.imagePath),
+                fit: BoxFit.cover,
+              ),
+            ),
+            height: 300.0,
+            width: MediaQuery.of(context).size.width,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              gradient: LinearGradient(
+                colors: [Colors.black.withOpacity(0.6), Colors.transparent],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 56.0,
+            left: 16.0,
+            right: 16.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item.title,
+                    style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white)),
+                SizedBox(height: 8.0),
+                Text(item.subtitle,
+                    style: TextStyle(fontSize: 16.0, color: Colors.white70)),
+                SizedBox(height: 8.0),
+                Text(item.date,
+                    style: TextStyle(fontSize: 14.0, color: Colors.white70)),
+              ],
+            ),
+          ),
+          /*
+          Positioned(
+            top: 16.0,
+            right: 16.0,
+            child: Icon(
+              item.like ? Icons.thumb_up : Icons.thumb_down,
+              color: item.like ? Colors.green : Colors.red,
+              size: 32.0,
+            ),
+          ),*/
+        ],
+      ),
+    ),
+  );
+}
+
+  //
+  Widget MyDrawerList(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.only(top: 15),
+    child: Column(
+      children: [
+        menuItem(1, "Inicio", Icons.home, currentPage == DrawerSections.inicioo, context),
+        menuItem(2, "Mi Perfil", Icons.person, currentPage == DrawerSections.miperfil, context),
+        menuItem(3, "Agenda", Icons.calendar_today, currentPage == DrawerSections.agenda, context),
+        menuItem(4, "Usuarios Asignados", Icons.group, currentPage == DrawerSections.usuarios_asignados, context),
+
+        Divider(), //separar secciones
+
+        menuItem(5, "Configuración", Icons.settings, currentPage == DrawerSections.settings, context),
+        menuItem(6, "Preguntas Frecuentes", Icons.question_answer, currentPage == DrawerSections.faq, context),
+        //menuItem(7, "Tarjetas", Icons.image, currentPage == DrawerSections.cards, context),
+
+      ],
+    ),
+  );
+}
+
+  //var currentPage = DrawerSections.dashboard; //
   @override
   Widget build(BuildContext context) {
+    final List<Content> contentList = [
+    Content(
+      title: "Instituto Therapy",
+      subtitle: "Talca, Región del Maule",
+      date: "15 de mayo, 2025",
+      imagePath: "images/edificio.jpg",
+      //like: false,
+    )
+  ];
+
+    Widget container = const Center(child: Text("Cargando..."));
+
+      if (currentPage == DrawerSections.inicioo) {
+        container = ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Bienvenido', //titulo
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ...contentList.map((item) => TarjetaImagen(item, context)).toList(),
+          ],
+        );
+      }else if (currentPage == DrawerSections.miperfil) {
+        container = ProfilePage();
+      } else if (currentPage == DrawerSections.agenda) {
+        container = AgendaPage();
+      } else if (currentPage == DrawerSections.usuarios_asignados) {
+        container = UsuariosPage();
+      } else if (currentPage == DrawerSections.settings) {
+        container = SettingsPage();
+      } else if (currentPage == DrawerSections.faq) {
+        container = FaqPage();
+      }
+
     return Scaffold( //EL SCAFFOLD
       appBar: AppBar(
         backgroundColor: Colors.red, //color barra
@@ -53,175 +233,29 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
       ),
-      body: Center(
-        child: Container(
-          height:double.maxFinite,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("images/dibujos.jpg"),
-              fit: BoxFit.cover,
-              ), //AQUIIIIIIIIIIIIIIII
-          ),
-          
-          child: _widgetOptions[_selectedIndex]
-          
-        ),
-        
-        ),
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255), //color de fondo
 
+      body: container,
+      
       drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(child: Text('Titulo Drawer')),
-
-            ListTile( //BOTON INICIO
-              leading: Icon(Icons.home),
-              title: Text('Inicio'),
-              onTap: () {}, //ME FALTA NAVEGACION ENTRE PAGINAS NOMAS PORQUE NO FUNCIONABA BIEN
-              ),
-
-            ListTile( //BOTON PERFIL
-              leading: Icon(Icons.person),
-              title: Text('Mi Perfil')
-              ),
-
-            ListTile( //BOTON AGENDA
-              leading: Icon(Icons.calendar_month),
-              title: Text('Agenda')
-              ),
-
-            ListTile( //BOTON USUARIOS
-              leading: Icon(Icons.family_restroom),
-              title: Text('Usuarios Asignados')
-              ),
-
-            //separar secciones
-            Divider(color: Colors.black,),
-
-            ListTile( //BOTON CONFIG
-              leading: Icon(Icons.settings),
-              title: Text('Configuración')
-              ),
-
-            ListTile( //BOTON FAQ
-              leading: Icon(Icons.question_answer_outlined),
-              title: Text('Preguntas Frecuentes')
-              ),
-
-            ListTile( //BOTON CONTACTO
-              leading: Icon(Icons.quick_contacts_dialer_rounded),
-              title: Text('Contacto')
-              ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              MyHeaderDrawer(),
+              MyDrawerList(context), // pásale el context
+            ],
+          ),
         ),
-      )
-      /*
-      drawer: Drawer( //EL DRAWER
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Titulo del Drawer'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home_outlined), //icono casita
-              title: const Text('Inicio'),
-              selected: _selectedIndex == 0, //seleccionar index
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(0);
-                //ACA DEBERIA HABER UN NAVIGATOR PUSH************************************************************************** 
-                //
-                //Navigator.push
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(title: 'title')));
-              
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person_2_outlined),
-              title: const Text('Mi perfil'),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(1);
-                // Then close the drawer
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const ProfilePage(title: 'Mi Perfil',),));
-                //Navigator.pop(context);
-                
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.book_rounded), //modificar despues el icono
-              title: const Text('Agenda'),
-              selected: _selectedIndex == 2,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(2);
-                // Then close the drawer
-                //Navigator.pop(context);
-                Navigator.of(context).push( //con push pa volver atras, cambiar
-                  MaterialPageRoute(
-                    builder: (context) => const AgendaPage(title: 'Agenda',),));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.family_restroom_outlined),
-              title: const Text('Usuarios Asignados'),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(1);
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-
-            const Divider(color: Colors.black), //partir secciones
-
-            ListTile(
-              leading: Icon(Icons.build),
-              title: const Text('Configuración'),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(1);
-                // Then close the drawer
-                //Navigator.pop(context);
-                Navigator.of(context).push( //con push pa volver atras, cambiar
-                  MaterialPageRoute(
-                    builder: (context) => const SettingsPage(title: 'Configuración',),));
-                
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.live_help),
-              title: const Text('Preguntas Frecuentes'),
-              selected: _selectedIndex == 1,
-              onTap: () {
-                // Update the state of the app
-                _onItemTapped(1);
-                // Then close the drawer
-                //Navigator.pop(context);
-                //añadir el navigator push sin el pop aqui cuando tenga la pantalla creada
-                Navigator.of(context).push( //con push pa volver atras, cambiar
-                  MaterialPageRoute(
-                    builder: (context) => const FaqPage(title: 'Preguntas Frecuentes',),));
-              },
-            ),
-          ],
-        ),
-      ),*/
+      ),
     );
   }
+}
+
+enum DrawerSections {
+  inicioo,
+  miperfil,
+  agenda,
+  usuarios_asignados,
+  settings,
+  faq,
+  cards,
 }

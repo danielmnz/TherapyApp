@@ -1,4 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:therapy_app/pantallas/home_p.dart';
+
+class SettingsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text('Configuración')
+      ),
+    );
+  }
+}
+
+/*
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.title});
@@ -86,3 +100,4 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
+*/

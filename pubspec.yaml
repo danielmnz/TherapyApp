@@ -67,6 +67,9 @@ flutter:
   assets:
       - images/Teleton-Talca.jpg
       - images/dibujos.jpg
+      - images/profile1.png
+      - images/donfrancis.png
+      - images/edificio.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

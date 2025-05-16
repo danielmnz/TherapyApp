@@ -1,4 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:therapy_app/pantallas/home_p.dart';
+
+class FaqPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text('Preguntas Frecuentes')
+      ),
+    );
+  }
+}
+
+/*
 
 class FaqPage extends StatefulWidget {
   const FaqPage({super.key, required this.title});
@@ -86,3 +100,4 @@ class _FaqPageState extends State<FaqPage> {
     );
   }
 }
+*/
